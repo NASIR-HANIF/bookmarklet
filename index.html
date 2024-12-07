@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clipboard Message to ChatGPT</title>
+</head>
+<body>
+    <h2>Clipboard to ChatGPT</h2>
+    <button id="openChatGPTButton">Open ChatGPT with Clipboard Message</button>
+
+    <script>
+        document.getElementById('openChatGPTButton').addEventListener('click', function() {
+            // Define your custom message
+            var customMessage = "Mujhe is article ka keyword extract karke dena hai, or jo bhi keywords hen article me in ka count bhi batana hey. Phir article ke liye 5 alag-alag SEO-friendly titles banao jinki length 55 characters se zyada na ho. Iske ilawa, article ki 5 different descriptions bhi likho, jinki length 140 characters ke darmiyan ho.";
+            
+            // Read text from clipboard
+            navigator.clipboard.readText().then(function(text) {
+                // Concatenate the clipboard text with the custom message
+                var message = customMessage + "\n\n" + text;
+
+                // Open the ChatGPT website in a new tab
+                var newTab = window.open('https://chatgpt.com/', '_blank');
+
+                // Poll the page to check when the contenteditable div is available
+                var interval = setInterval(function() {
+                    // Check if the div with contenteditable exists
+                    var promptArea = newTab.document.querySelector('div[contenteditable="true"].ProseMirror');
+                    
+                    if (promptArea) {
+                        // If div is found, show the concatenated message in alert
+                        alert("Message to be inserted: \n\n" + message);
+
+                        // Stop the interval once the message is displayed in alert
+                        clearInterval(interval);
+                    }
+                }, 500); // Check every 500ms
+            }).catch(function(err) {
+                alert('Clipboard se data nahi le sakay: ' + err);
+            });
+        });
+    </script>
+</body>
+</html>
